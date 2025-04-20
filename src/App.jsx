@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { Form } from "./components/Form"
 import { ProduitListe } from "./components/ProduitListe"
 import { Alert } from "./components/Alert";
+import axios from "axios";
 
 function App() {
   const INIT = { id: '', libelle: '', prix: '' };
@@ -19,24 +20,14 @@ function App() {
   
   const [liste, setListe] = useState([]);
   useEffect(() => {
-    console.log('componenet mounting');
-    setListe([
-      {
-        id: 1,
-        libelle: 'Produit 1',
-        prix: 10.99
-      },
-      {
-        id: 2,
-        libelle: 'Produit 2',
-        prix: 5.99
-      },
-      {
-        id: 3,
-        libelle: 'Produit 3',
-        prix: 300
-      },
-    ]);
+    axios.get('https://6679da7d18a459f63951a26a.mockapi.io/products').
+    then(reponse=>setListe(reponse.data))
+
+
+
+
+
+
     return ()=>{
       console.log('component unmounted')
     }
