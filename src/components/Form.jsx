@@ -1,7 +1,10 @@
 import React from 'react'
+import { useUser } from '../UserContext'
 
 export const Form = ({produitForm,setProduitForm,ajouter,action,color}) => {
+    const {user,setUser}=useUser();
     return (
+        
         <div className='col-6 mx-auto shadow p-3'>
                 <div className='mb-3'>
                     <label className='form-label' htmlFor="name">Libelle:</label>
@@ -14,6 +17,7 @@ export const Form = ({produitForm,setProduitForm,ajouter,action,color}) => {
                 </div>
                 <div className="mb-3">
                     <button onClick={ajouter} className={'btn btn-sm btn-'+color}>{action}</button>
+                    Salut {user}
                 </div>
           
         </div>

@@ -1,8 +1,12 @@
 import React from 'react'
+import { useUser } from '../UserContext'
 
 export const ProduitListe = ({liste,supprimer,editer}) => {
+ const  {user,setUser}= useUser();
   return (
     <div className='container mt-5'>
+      <h3>Salut {user}</h3>
+      <button onClick={()=>setUser('Mohamed')}>Changer</button>
         <table className="table">
   <thead>
     <tr>

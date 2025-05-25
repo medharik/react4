@@ -3,6 +3,8 @@ import { Form } from "./components/Form"
 import { ProduitListe } from "./components/ProduitListe"
 import { Alert } from "./components/Alert";
 import axios from "axios";
+import { supprimerAPI } from "./api/produitApi";
+import { Link, Route, Routes } from "react-router-dom";
 
 function App() {
   const INIT = { id: '', libelle: '', prix: '' };
@@ -22,12 +24,6 @@ function App() {
   useEffect(() => {
     axios.get('https://6679da7d18a459f63951a26a.mockapi.io/products').
     then(reponse=>setListe(reponse.data))
-
-
-
-
-
-
     return ()=>{
       console.log('component unmounted')
     }
@@ -45,6 +41,7 @@ function App() {
       setListe(liste.map(p=>p.id===produitForm.id ? produitForm:p));
       setNotice({texte:'modification affectuee avec success',couleur:'warning'})
 
+      
     
     }
 
@@ -53,8 +50,12 @@ function App() {
     setProduitForm(INIT)
   }
   const supprimer=(id)=>{
-setListe(liste.filter(p=>p.id!=id));
-setNotice({texte:'suppression affectuee avec success',couleur:'danger'})
+    if(confirm('supprimer?')){
+      setListe(liste.filter(p=>p.id!=id));
+      supprimerAPI(id);
+      setNotice({texte:'suppression affectuee avec success',couleur:'danger'})
+
+    }
 
   }
   const editer=(id)=>{
@@ -74,9 +75,14 @@ setNotice({texte:'Edition du produit '+ produitForm.libelle,couleur:'info'})
     
     <button onClick={nouveau}>Nouveau</button>
     <Alert notice={notice}/>
+<Link to={'/form'}>formulaire produit</Link>
+<Link to={'/liste'}>liste des  produits</Link>
+    <Routes>
+<Route path="/form" element={<> 
       <Form  color={color} action={action} ajouter={ajouter} produitForm={produitForm} setProduitForm={setProduitForm} />
-      <h2>Libelle  : {produitForm.libelle}, Prix : {produitForm.prix}</h2>
-      <ProduitListe  editer={editer} supprimer={supprimer} liste={liste} />
+      <h2>Libelle  : {produitForm.libelle}, Prix : {produitForm.prix}</h2></>}/>
+      <Route path="/liste" element={<ProduitListe  editer={editer} supprimer={supprimer} liste={liste} />} />
+    </Routes>
     </>
   )
 }
